@@ -3,17 +3,19 @@
 Servo traction;
 Servo direct;
 
-//init traction
+//Initialisation traction
 const long interval = 1000;
 unsigned long previousMillis = 0;
 
-//Données
+//Liaison série
 boolean messageRecu = false;
 String inputString = "";
 
 void setup(){
+  //Liaison série
   Serial.begin(9600);
-  
+
+  //Commande Moteur
   traction.attach(11);
   direct.attach(9);
 
@@ -41,7 +43,7 @@ void loop()
       delay(200);
       traction.write(90);
       delay(200);
-      traction.write(val%3000);
+      traction.write(val%1000);
     }
     
     messageRecu = false;
@@ -56,9 +58,9 @@ void init_traction()
     unsigned long currentMillis = millis();
     if (currentMillis - previousMillis >= interval) {
       previousMillis = currentMillis;
-      if(i==0)      traction.write(90);
-      else if(i==1) traction.write(180);
-      else if(i==2) traction.write(0);
+      if(i==0)      traction.write(90);//Point neutre
+      else if(i==1) traction.write(180);//Accélération max
+      else if(i==2) traction.write(0);//Frein max
       i++;
     }
   }
